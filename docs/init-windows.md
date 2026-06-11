@@ -1,7 +1,4 @@
-# Windows development setup 
-
-> **TEST REPLACE AND STAGE CHANGE**
-
+# Windows development setup
 
 ## 1. Before installing
 
@@ -15,6 +12,16 @@ Check Windows type:
 4. Usually it will be **64-bit operating system, x64-based processor**.
 
 For downloads, choose **Windows x64** unless the laptop is clearly ARM64.
+
+Or you can start the command (cmd.exe) : "Eingabeaufforderung"
+
+'''bash
+echo %PROCESSOR_ARCHITECTURE%
+'''
+
+Task Mgr : ctrl+shift+ ESC
+
+---
 
 ## 2. Install Visual Studio Code
 
