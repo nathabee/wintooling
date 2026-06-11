@@ -1,6 +1,6 @@
 # Windows development setup 
 
-> **PLEASE IGNORE THIS DOC THIS IS PRIVATE AND HAS NOTHING TODO WITH THE PROJECT**
+> **TEST REPLACE AND STAGE CHANGE**
 
 
 ## 1. Before installing
