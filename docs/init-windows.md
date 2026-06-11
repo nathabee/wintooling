@@ -15,9 +15,8 @@ For downloads, choose **Windows x64** unless the laptop is clearly ARM64.
 
 Or you can start the command (cmd.exe) : "Eingabeaufforderung"
 
-'''bash
 echo %PROCESSOR_ARCHITECTURE%
-'''
+
 
 Task Mgr : ctrl+shift+ ESC
 
