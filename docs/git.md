@@ -85,10 +85,6 @@ If `remote origin already exists`, use:
 git remote -v
 git push -u origin main
 ```
- 
-
-
- 
 
 ---
 
