@@ -1,0 +1,83 @@
+<section class="page">
+  <div class="page-heading">
+    <p>Global runtime state</p>
+    <h2>Dashboard</h2>
+  </div>
+
+  @if (monitoring$ | async; as monitoring) {
+    <div class="metric-grid">
+      <article class="metric">
+        <span>Total printers</span>
+        <strong>{{ monitoring.summary.totalPrinters }}</strong>
+      </article>
+      <article class="metric">
+        <span>Enabled</span>
+        <strong>{{ monitoring.summary.enabledPrinters }}</strong>
+      </article>
+      <article class="metric">
+        <span>Disabled</span>
+        <strong>{{ monitoring.summary.disabledPrinters }}</strong>
+      </article>
+      <article class="metric">
+        <span>Busy</span>
+        <strong>{{ monitoring.summary.busyPrinters }}</strong>
+      </article>
+      <article class="metric">
+        <span>Errors</span>
+        <strong>{{ monitoring.summary.errorPrinters }}</strong>
+      </article>
+      <article class="metric">
+        <span>Active jobs</span>
+        <strong>{{ monitoring.summary.activeJobs }}</strong>
+      </article>
+      <article class="metric">
+        <span>Active uploads</span>
+        <strong>{{ monitoring.summary.activeUploads }}</strong>
+      </article>
+    </div>
+
+    <section class="panel">
+      <div class="panel-heading">
+        <h3>Printer state list</h3>
+        <span>Generated {{ monitoring.generatedAt | date:'medium' }}</span>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Mode</th>
+              <th>Enabled</th>
+              <th>State</th>
+              <th>Busy</th>
+              <th>Updated</th>
+              <th>Error</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (printer of monitoring.printers; track printer.id) {
+              <tr>
+                <td>{{ printer.displayName }}</td>
+                <td>{{ printer.mode }}</td>
+                <td>{{ printer.enabled ? 'yes' : 'no' }}</td>
+                <td><span class="state-pill">{{ printer.state }}</span></td>
+                <td>{{ printer.busy ? 'yes' : 'no' }}</td>
+                <td>{{ printer.updatedAt ? (printer.updatedAt | date:'medium') : 'n/a' }}</td>
+                <td>{{ printer.errorMessage || 'none' }}</td>
+              </tr>
+            } @empty {
+              <tr>
+                <td colspan="7">No printers returned by the API.</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </section>
+  } @else if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  } @else {
+    <p class="loading-message">Loading monitoring data...</p>
+  }
+</section>

@@ -1,0 +1,31 @@
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">SC</span>
+      <div>
+        <strong>SpaghettiChef</strong>
+        <span>Angular Console</span>
+      </div>
+    </div>
+
+    <nav class="nav-links" aria-label="Main navigation">
+      <a routerLink="/dashboard" routerLinkActive="active">Dashboard</a>
+      <a routerLink="/printers" routerLinkActive="active">Printers</a>
+      <a routerLink="/settings" routerLinkActive="active">Settings</a>
+    </nav>
+  </aside>
+
+  <main class="main-panel">
+    <header class="top-bar">
+      <div>
+        <p>Read-only API client</p>
+        <h1>{{ title }}</h1>
+      </div>
+      <span class="api-base">localhost:18080</span>
+    </header>
+
+    <section class="content-area">
+      <router-outlet />
+    </section>
+  </main>
+</div>

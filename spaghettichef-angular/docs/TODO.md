@@ -1,7 +1,7 @@
 
 
 ```text
-Create a small Angular standalone application named spaghettichef-console-angular.
+Create a small Angular standalone application named spangular.
 
 Use routing with three pages: Dashboard, Printers, Settings.
 

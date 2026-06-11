@@ -1,0 +1,101 @@
+.page {
+  display: grid;
+  gap: 22px;
+}
+
+.page-heading p,
+.page-heading h2,
+.printer-card h3,
+.printer-card p,
+dl,
+dd {
+  margin: 0;
+}
+
+.page-heading p,
+.printer-card p,
+dt,
+.response-block span {
+  color: #667085;
+}
+
+.page-heading h2 {
+  margin-top: 4px;
+  font-size: 1.6rem;
+}
+
+.printer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.printer-card,
+.error-message,
+.loading-message,
+.empty-message {
+  border: 1px solid #dfe5ef;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+}
+
+.printer-card {
+  display: grid;
+  gap: 18px;
+}
+
+.printer-card-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.state-pill {
+  align-self: start;
+  border-radius: 6px;
+  padding: 4px 8px;
+  background: #eaf2ff;
+  color: #1849a9;
+  font-size: 0.84rem;
+  font-weight: 700;
+}
+
+dl {
+  display: grid;
+  gap: 10px;
+}
+
+dl div {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr);
+  gap: 10px;
+}
+
+dt {
+  font-size: 0.88rem;
+}
+
+dd {
+  color: #172033;
+}
+
+.response-block {
+  display: grid;
+  gap: 6px;
+}
+
+code {
+  display: block;
+  overflow-x: auto;
+  border-radius: 6px;
+  padding: 10px;
+  background: #f3f6fb;
+  color: #344054;
+}
+
+.error-message {
+  border-color: #fecaca;
+  color: #991b1b;
+  background: #fff7f7;
+}

@@ -1,0 +1,41 @@
+<section class="page">
+  <div class="page-heading">
+    <p>Monitoring configuration</p>
+    <h2>Settings</h2>
+  </div>
+
+  @if (settings$ | async; as settings) {
+    <section class="settings-panel">
+      <dl>
+        <div>
+          <dt>Poll interval</dt>
+          <dd>{{ settings.pollIntervalSeconds }} seconds</dd>
+        </div>
+        <div>
+          <dt>Snapshot minimum interval</dt>
+          <dd>{{ settings.snapshotMinimumIntervalSeconds }} seconds</dd>
+        </div>
+        <div>
+          <dt>Temperature delta threshold</dt>
+          <dd>{{ settings.temperatureDeltaThreshold }}</dd>
+        </div>
+        <div>
+          <dt>Event deduplication window</dt>
+          <dd>{{ settings.eventDeduplicationWindowSeconds }} seconds</dd>
+        </div>
+        <div>
+          <dt>Error persistence behavior</dt>
+          <dd>{{ settings.errorPersistenceBehavior }}</dd>
+        </div>
+        <div>
+          <dt>Debug wire tracing</dt>
+          <dd>{{ settings.debugWireTracingEnabled ? 'enabled' : 'disabled' }}</dd>
+        </div>
+      </dl>
+    </section>
+  } @else if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  } @else {
+    <p class="loading-message">Loading monitoring settings...</p>
+  }
+</section>

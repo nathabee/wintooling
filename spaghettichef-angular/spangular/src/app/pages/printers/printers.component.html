@@ -1,0 +1,60 @@
+<section class="page">
+  <div class="page-heading">
+    <p>Registered printers</p>
+    <h2>Printers</h2>
+  </div>
+
+  @if (printers$ | async; as response) {
+    <div class="printer-grid">
+      @for (printer of response.printers; track printer.id) {
+        <article class="printer-card">
+          <div class="printer-card-header">
+            <div>
+              <h3>{{ printer.displayName }}</h3>
+              <p>{{ printer.id }}</p>
+            </div>
+            <span class="state-pill">{{ printer.state }}</span>
+          </div>
+
+          <dl>
+            <div>
+              <dt>Mode</dt>
+              <dd>{{ printer.mode }}</dd>
+            </div>
+            <div>
+              <dt>Enabled</dt>
+              <dd>{{ printer.enabled ? 'yes' : 'no' }}</dd>
+            </div>
+            <div>
+              <dt>Hotend</dt>
+              <dd>{{ printer.hotendTemperature === null ? 'n/a' : (printer.hotendTemperature | number:'1.0-1') + ' C' }}</dd>
+            </div>
+            <div>
+              <dt>Bed</dt>
+              <dd>{{ printer.bedTemperature === null ? 'n/a' : (printer.bedTemperature | number:'1.0-1') + ' C' }}</dd>
+            </div>
+            <div>
+              <dt>Last update</dt>
+              <dd>{{ printer.updatedAt ? (printer.updatedAt | date:'medium') : 'n/a' }}</dd>
+            </div>
+            <div>
+              <dt>Error</dt>
+              <dd>{{ printer.errorMessage || 'none' }}</dd>
+            </div>
+          </dl>
+
+          <div class="response-block">
+            <span>Last response</span>
+            <code>{{ printer.lastResponse || 'none' }}</code>
+          </div>
+        </article>
+      } @empty {
+        <p class="empty-message">No printers returned by the API.</p>
+      }
+    </div>
+  } @else if (errorMessage) {
+    <p class="error-message">{{ errorMessage }}</p>
+  } @else {
+    <p class="loading-message">Loading printers...</p>
+  }
+</section>

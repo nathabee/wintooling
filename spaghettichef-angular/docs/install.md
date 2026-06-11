@@ -15,7 +15,7 @@ Create a small Angular 19 project on Windows to test:
 
 Project name:
 
-spaghettichef-console-angular
+spangular
 
 This project will directly call the local SpaghettiChef API.
 
@@ -61,6 +61,7 @@ After installation, close PowerShell completely and open a new PowerShell window
 Check:
 
 ```powershell
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 node --version
 npm --version
 ````
@@ -98,20 +99,20 @@ Package Manager: npm
 
 ---
 
-## 5. Create Project Folder
+## 5.  repository for our spaghettichef-angular console project
 
 ```powershell
-mkdir C:\coding
-mkdir C:\coding\angular
-cd C:\coding\angular
+cd  C:\Users\natha\wintooling\spaghettichef-angular
 ```
+
 
 ---
 
 ## 6. Create Angular Project
 
 ```powershell
-ng new spaghettichef-console-angular
+cd  C:\Users\natha\wintooling\spaghettichef-angular
+ng new spangular
 ```
 
 When asked:
@@ -135,7 +136,7 @@ Yes
 ## 7. Enter Project
 
 ```powershell
-cd C:\coding\angular\spaghettichef-console-angular
+cd C:\Users\natha\wintooling\spaghettichef-angular\spangular
 ```
 
 ---
