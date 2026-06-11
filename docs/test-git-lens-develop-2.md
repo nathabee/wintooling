@@ -10,7 +10,7 @@ develop contains 2 new committed files
 Goal = review develop, then merge develop into main with a Pull Request
 ```
 
-Important correction: **GitLens can help review and inspect changes**, but **opening issues and accepting PRs is normally done on GitHub.com** or with the **GitHub Pull Requests extension** in VS Code. GitLens alone is not the main PR tool.
+Important correction: **GitLens can help review and inspect changes**, but **opening issuesis normally done on GitHub.com** or with the **GitHub Pull Requests extension** in VS Code. GitLens alone is not the main PR tool.
 
 scope :  we want now using googlens to merge the branch develop to the branch with PR after reviewing the changes (we should see 2 new files before accepting the merge)
 
@@ -48,17 +48,24 @@ Then create the issue.
 
 ## 2. Create a Pull Request
 
-On GitHub.com:
+Yes, correct. GitLens can help create a Pull Request if it is connected to GitHub.
+
+Use it like this:
 
 ```text
-Repository → Pull requests → New pull request
+GitLens
+→ Repositories
+→ wintooling
+→ Branches
+→ develop
+→ Create Pull Request
 ```
 
-Select:
+Set:
 
 ```text
 base: main
-compare: develop
+compare/source: develop
 ```
 
 Meaning:
@@ -67,13 +74,23 @@ Meaning:
 merge develop into main
 ```
 
-GitHub should show:
+Before creating/merging, inspect:
 
 ```text
-2 files changed
+Files changed
 ```
 
-Review these two files before merging.
+You should see the **2 new files**.
+
+Clean rule:
+
+```text
+GitLens = can create/review PR
+GitHub.com = safest place to final-check and merge
+VS Code Git extension = fetch/pull/push/switch branch
+```
+ 
+
 
 ## 3. Review changes with GitLens in VS Code
 
@@ -159,4 +176,4 @@ VS Code Git extension
 → Switch branch
 ```
 
-So the professional workflow is: **GitLens for review, GitHub PR for merge.**
+So the professional workflow is: **GitLens for inspection and PR creation, GitHub.com for final PR validation and merge.**
