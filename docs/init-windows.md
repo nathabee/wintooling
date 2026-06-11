@@ -99,6 +99,15 @@ Open PowerShell and run:
 git --version
 ```
 
+ Init github user
+
+```powershell
+git config --global user.name "You Name"
+git config --global user.email "name@email"
+
+git config --global --list
+```
+
 ## 5. Install ShareX
 
 1. Open the official ShareX download page.
