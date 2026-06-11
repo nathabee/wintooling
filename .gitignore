@@ -1,0 +1,34 @@
+# SpaghettiChef Angular local files
+spaghettichef-angular/spangular/.env
+spaghettichef-angular/spangular/src/environments/environment.ts
+spaghettichef-angular/spangular/ng-serve*.log
+
+# Jenkins release packaging output
+/dist/
+/package/
+/.jenkins-release-name
+/.jenkins-release-safe-name
+/github-release-response.json
+
+# Angular build output and caches
+spaghettichef-angular/spangular/dist/
+spaghettichef-angular/spangular/tmp/
+spaghettichef-angular/spangular/out-tsc/
+spaghettichef-angular/spangular/.angular/cache/
+spaghettichef-angular/spangular/coverage/
+
+# Node dependencies
+spaghettichef-angular/spangular/node_modules/
+spaghettichef-angular/spangular/npm-debug.log
+spaghettichef-angular/spangular/yarn-error.log
+
+# Editor and OS files
+.idea/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/
+.DS_Store
+Thumbs.db

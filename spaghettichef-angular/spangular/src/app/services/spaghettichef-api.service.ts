@@ -5,12 +5,13 @@ import { Observable } from 'rxjs';
 import { MonitoringResponse } from '../models/monitoring.model';
 import { PrintersResponse } from '../models/printer.model';
 import { MonitoringSettings } from '../models/settings.model';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SpaghettichefApiService {
-  private readonly baseUrl = 'http://localhost:18080';
+  private readonly baseUrl = environment.spaghettichefApiBaseUrl.replace(/\/$/, '');
 
   constructor(private readonly http: HttpClient) {}
 

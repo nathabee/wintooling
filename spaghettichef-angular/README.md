@@ -201,13 +201,30 @@ src/
 
 ## API Base URL
 
-Initial development URL:
+The Angular app reads the API base URL from:
 
 ```text
-http://localhost:18080
+spangular/.env
 ```
 
-The value may later be moved to Angular environment configuration.
+Example for a SpaghettiChef API running on another machine in the same LAN:
+
+```text
+SPAGHETTICHEF_API_BASE_URL=http://192.168.178.39:18080
+```
+
+Use `spangular/.env.example` as the template.
+
+The `npm start`, `npm run build`, and `npm run watch` commands generate:
+
+```text
+spangular/src/environments/environment.ts
+```
+
+Angular imports that generated file at build time.
+
+The browser calls this URL directly. If the Angular development server runs on
+`http://127.0.0.1:4200`, the SpaghettiChef API must allow that origin with CORS.
 
 ---
 

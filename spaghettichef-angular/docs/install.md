@@ -1,243 +1,278 @@
-# install.md
+# SpaghettiChef Angular Install Guide
 
-# SpaghettiChef Angular Test Project Setup on Windows
+This guide explains three install modes:
 
-## 1. Goal
+1. Windows release zip
+2. Linux release tar.gz
+3. Developer clone from GitHub
 
-Create a small Angular 19 project on Windows to test:
+The Angular app is a read-only frontend. It calls the SpaghettiChef REST API
+directly from the browser.
 
-- VS Code
-- Angular Language Service 19.2.0
-- Angular routing
-- Angular components
-- HttpClient
-- Codex-assisted development
+The Angular project is in:
 
-Project name:
+```text
+spaghettichef-angular/spangular
+```
 
-spangular
+## Requirements
 
-This project will directly call the local SpaghettiChef API.
-
-No Django backend is used for this first Angular test.
-
----
-
-## 2. Required Versions
-
-Because VS Code has Angular Language Service 19.2.0 installed, use Angular 19.
-
-Recommended setup:
+Install these first:
 
 - Node.js 22 LTS
-- npm included with Node.js
-- Angular CLI 19
-- Angular project 19
+- npm, included with Node.js
+- Git, only needed for developer clone mode
+- VS Code, optional but recommended for development
 
-Angular 19 supports Node.js versions `^18.19.1`, `^20.11.1`, or `^22.0.0`. Use Node.js 22 LTS to stay clean. :contentReference[oaicite:0]{index=0}
-
-The Angular Language Service extension provides Angular template completions, diagnostics, quick info, and navigation. It does not install Angular or Node.js. :contentReference[oaicite:1]{index=1}
-
----
-
-## 3. Install Node.js on Windows
-
-Download Node.js from the official Node.js website:
-
-https://nodejs.org
-
-Choose:
-
-Node.js 22 LTS Windows Installer
-
-During installation:
-
-- keep default options
-- allow Node.js to be added to PATH
-- install npm with Node.js
-
-After installation, close PowerShell completely and open a new PowerShell window.
+After installing Node.js, close PowerShell or your terminal and open a new one.
 
 Check:
 
 ```powershell
-Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 node --version
 npm --version
-````
+```
 
-Expected example:
+Expected examples:
 
 ```text
 v22.x.x
 10.x.x
 ```
 
----
+The project uses the local Angular CLI from `node_modules`, so a global Angular
+CLI install is not required for release installs.
 
-## 4. Install Angular CLI 19
-
-In PowerShell:
-
-```powershell
-npm install -g @angular/cli@19
-```
-
-Verify:
+On Windows, if PowerShell blocks `npm` because of `npm.ps1`, use `npm.cmd` in
+commands, or allow local scripts for your user:
 
 ```powershell
-ng version
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned
 ```
 
-Expected:
+## Configure The API URL
+
+The API URL is configured in:
 
 ```text
-Angular CLI: 19.x.x
-Node: 22.x.x
-Package Manager: npm
+spangular/.env
 ```
 
----
-
-## 5.  repository for our spaghettichef-angular console project
-
-```powershell
-cd  C:\Users\natha\wintooling\spaghettichef-angular
-```
-
-
----
-
-## 6. Create Angular Project
-
-```powershell
-cd  C:\Users\natha\wintooling\spaghettichef-angular
-ng new spangular
-```
-
-When asked:
+Create it from the example:
 
 ```text
-Which stylesheet format would you like to use?
-SCSS
-
-Do you want to enable Server-Side Rendering and Static Site Generation?
-No
+spangular/.env.example
 ```
 
-If Angular asks about routing:
+Example when SpaghettiChef runs on another machine in the same LAN:
 
 ```text
-Yes
+SPAGHETTICHEF_API_BASE_URL=http://192.168.178.39:18080
 ```
 
----
+If your SpaghettiChef API uses another address, change only this value.
 
-## 7. Enter Project
+Do not commit `.env`. It is local machine configuration.
 
-```powershell
-cd C:\Users\natha\wintooling\spaghettichef-angular\spangular
-```
-
----
-
-## 8. Test Build
-
-```powershell
-ng build
-```
-
-Expected:
+When `npm start`, `npm run build`, or `npm run watch` runs, the project generates:
 
 ```text
-Application bundle generation complete
+spangular/src/environments/environment.ts
 ```
 
----
+Angular reads that generated file at build time.
 
-## 9. Start Angular Development Server
+The browser calls the API URL directly. If the Angular page loads but API data
+does not, check that SpaghettiChef allows CORS for the Angular origin, usually:
+
+```text
+http://127.0.0.1:4200
+```
+
+You can test the API with:
 
 ```powershell
-ng serve
+curl http://192.168.178.39:18080/health
+```
+
+Use your own API address if it is different.
+
+## Mode 1: Windows Release Zip
+
+Download the Windows release asset from GitHub Releases:
+
+```text
+spaghettichef-angular-<release-name>-windows.zip
+```
+
+Extract it:
+
+```powershell
+cd C:\Users\natha
+Expand-Archive .\Downloads\spaghettichef-angular-<release-name>-windows.zip -DestinationPath .
+cd C:\Users\natha\spaghettichef-angular\spangular
+```
+
+Create and edit `.env`:
+
+```powershell
+copy .env.example .env
+notepad .env
+```
+
+Install dependencies:
+
+```powershell
+npm.cmd install
+```
+
+Build:
+
+```powershell
+npm.cmd run build
+```
+
+Start the Angular development server:
+
+```powershell
+npm.cmd start
 ```
 
 Open:
 
 ```text
-http://localhost:4200
+http://127.0.0.1:4200
 ```
 
-You should see the Angular starter page.
+## Mode 2: Linux Release Tarball
 
----
+Download the Linux release asset from GitHub Releases:
 
-## 10. Open Project in VS Code
+```text
+spaghettichef-angular-<release-name>-linux.tar.gz
+```
 
-From the project folder:
+Extract it:
+
+```bash
+cd "$HOME"
+tar -xzf ~/Downloads/spaghettichef-angular-<release-name>-linux.tar.gz
+cd "$HOME/spaghettichef-angular/spangular"
+```
+
+Create and edit `.env`:
+
+```bash
+cp .env.example .env
+nano .env
+```
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Build:
+
+```bash
+npm run build
+```
+
+Start the Angular development server:
+
+```bash
+npm start -- --host 127.0.0.1 --port 4200
+```
+
+Open:
+
+```text
+http://127.0.0.1:4200
+```
+
+If you want to open the Angular app from another machine in the LAN, start it
+with:
+
+```bash
+npm start -- --host 0.0.0.0 --port 4200
+```
+
+Then open:
+
+```text
+http://<linux-machine-ip>:4200
+```
+
+## Mode 3: Developer Clone From GitHub
+
+Use this mode when you want to edit the code.
+
+Clone the repository:
+
+```powershell
+cd C:\Users\natha
+git clone https://github.com/nathabee/wintooling.git
+cd C:\Users\natha\wintooling
+```
+
+Enter the Angular project:
+
+```powershell
+cd C:\Users\natha\wintooling\spaghettichef-angular\spangular
+```
+
+Install dependencies:
+
+```powershell
+npm.cmd install
+```
+
+Create and edit `.env`:
+
+```powershell
+copy .env.example .env
+notepad .env
+```
+
+Build:
+
+```powershell
+npm.cmd run build
+```
+
+Start:
+
+```powershell
+npm.cmd start
+```
+
+Open:
+
+```text
+http://127.0.0.1:4200
+```
+
+Open the project in VS Code:
 
 ```powershell
 code .
 ```
 
-The Angular Language Service extension should now become useful.
+## Routes
 
-It helps with:
-
-* `.html` template autocomplete
-* component property checking
-* binding errors
-* navigation between template and TypeScript
-* Angular diagnostics
-
----
-
-## 11. Check SpaghettiChef API
-
-In another PowerShell window:
-
-```powershell
-curl http://localhost:18080/health
+```text
+/dashboard
+/printers
+/settings
 ```
 
-Expected:
+## API Calls
 
-```json
-{
-  "status": "ok"
-}
-```
+The frontend uses only read-only API calls:
 
-If this works, Angular can later call SpaghettiChef.
+- `GET /monitoring`
+- `GET /printers`
+- `GET /settings/monitoring`
 
----
-
-## 12. Project Scope for Codex Later
-
-Codex should create a read-only Angular frontend with:
-
-Routes:
-
-* `/dashboard`
-* `/printers`
-* `/settings`
-
-API calls:
-
-* `GET http://localhost:18080/monitoring`
-* `GET http://localhost:18080/printers`
-* `GET http://localhost:18080/settings/monitoring`
-
-see : docs/RELATED/api-contract.md (READ ONLY)
-
-Rules:
-
-* no Django
-* no backend
-* no authentication
-* no write actions
-* no POST
-* no PUT
-* no DELETE
-* read-only frontend only
-
- 
+It does not include Django, authentication, backend code, or write operations.
