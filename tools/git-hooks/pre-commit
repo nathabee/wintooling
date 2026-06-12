@@ -2,12 +2,35 @@
 set -euo pipefail
 
 ROOT_DIR="$(git rev-parse --show-toplevel)"
+VERSION_FILES=(
+  "${ROOT_DIR}/VERSION"
+  "${ROOT_DIR}/spaghettichef-angular/spangular/package.json"
+  "${ROOT_DIR}/spaghettichef-angular/spangular/package-lock.json"
+)
+
+file_hash() {
+  if [[ -f "$1" ]]; then
+    git hash-object -- "$1"
+  else
+    printf '%s\n' "missing"
+  fi
+}
+
+declare -A before_hashes
+for version_file in "${VERSION_FILES[@]}"; do
+  before_hashes["${version_file}"]="$(file_hash "${version_file}")"
+done
+
 "${ROOT_DIR}/tools/sync-version.sh"
 
-if ! git diff --quiet -- \
-  "${ROOT_DIR}/VERSION" \
-  "${ROOT_DIR}/spaghettichef-angular/spangular/package.json" \
-  "${ROOT_DIR}/spaghettichef-angular/spangular/package-lock.json"; then
-  echo "Version files were synced from VERSION. Stage them and commit again." >&2
-  exit 1
+changed_files=()
+for version_file in "${VERSION_FILES[@]}"; do
+  after_hash="$(file_hash "${version_file}")"
+  if [[ "${after_hash}" != "${before_hashes[${version_file}]}" ]]; then
+    changed_files+=("${version_file}")
+  fi
+done
+
+if [[ "${#changed_files[@]}" -gt 0 ]]; then
+  git add -- "${changed_files[@]}"
 fi
