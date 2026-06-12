@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+ROOT_DIR="$(git rev-parse --show-toplevel)"
+"${ROOT_DIR}/tools/sync-version.sh"
+
+if ! git diff --quiet -- \
+  "${ROOT_DIR}/VERSION" \
+  "${ROOT_DIR}/spaghettichef-angular/spangular/package.json" \
+  "${ROOT_DIR}/spaghettichef-angular/spangular/package-lock.json"; then
+  echo "Version files were synced from VERSION. Stage them and commit again." >&2
+  exit 1
+fi

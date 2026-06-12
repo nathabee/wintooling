@@ -20,7 +20,7 @@ pipeline {
         string(
             name: 'RELEASE_NAME',
             defaultValue: '',
-            description: 'Release name, for example 0.1.0 or 0.1.0-lan-test. Leave empty to use package.json version.'
+            description: 'Release name, for example 0.1.0 or 0.1.0-lan-test. Leave empty to use VERSION.'
         )
         booleanParam(
             name: 'PUBLISH_GITHUB_RELEASE',
@@ -81,12 +81,14 @@ pipeline {
                 sh '''
                     set -eu
 
-                    PACKAGE_VERSION="$(node -p "require('./${ANGULAR_DIR}/package.json').version")"
+                    VERSION_VALUE="$(tr -d '[:space:]' < VERSION)"
                     RELEASE_NAME_VALUE="${RELEASE_NAME:-}"
 
                     if [ -z "${RELEASE_NAME_VALUE}" ]; then
-                      RELEASE_NAME_VALUE="${PACKAGE_VERSION}"
+                      RELEASE_NAME_VALUE="${VERSION_VALUE}"
                     fi
+
+                    bash ./tools/check-version.sh
 
                     SAFE_RELEASE_NAME="$(printf '%s' "${RELEASE_NAME_VALUE}" | tr -c 'A-Za-z0-9._-' '-')"
 
@@ -112,7 +114,7 @@ pipeline {
                     fi
 
                     cp .env.example .env
-                    npm run build
+                    npm run build -- --configuration production
                 '''
             }
         }
@@ -123,44 +125,54 @@ pipeline {
                     set -eu
 
                     SAFE_RELEASE_NAME="$(cat .jenkins-release-safe-name)"
-                    WINDOWS_PACKAGE="spaghettichef-angular-${SAFE_RELEASE_NAME}-windows.zip"
-                    LINUX_PACKAGE="spaghettichef-angular-${SAFE_RELEASE_NAME}-linux.tar.gz"
+                    WINDOWS_PACKAGE="spaghettichef-angular-${SAFE_RELEASE_NAME}-windows-production.zip"
+                    LINUX_PACKAGE="spaghettichef-angular-${SAFE_RELEASE_NAME}-linux-production.tar.gz"
 
                     rm -rf package dist
                     mkdir -p package/windows package/linux dist
 
                     "${PYTHON_BIN}" - <<'PY'
+import json
 import pathlib
 import shutil
 
-source = pathlib.Path("spaghettichef-angular")
+browser_dist = pathlib.Path("spaghettichef-angular/spangular/dist/spangular/browser")
+docs = pathlib.Path("spaghettichef-angular/docs")
+readme = pathlib.Path("spaghettichef-angular/README.md")
+env_example = pathlib.Path("spaghettichef-angular/spangular/.env.example")
 destinations = [
     pathlib.Path("package/windows/spaghettichef-angular"),
     pathlib.Path("package/linux/spaghettichef-angular"),
 ]
 
-ignore_names = {
-    ".angular",
-    ".env",
-    "dist",
-    "node_modules",
-    "ng-serve.err.log",
-    "ng-serve.out.log",
-}
-
-def ignore(directory, names):
-    directory_path = pathlib.Path(directory)
-    ignored = {name for name in names if name in ignore_names}
-
-    if directory_path.as_posix().endswith("spangular/src/environments"):
-        ignored.add("environment.ts")
-
-    return ignored
+if not browser_dist.exists():
+    raise SystemExit(f"Missing Angular production output: {browser_dist}")
 
 for destination in destinations:
     if destination.exists():
         shutil.rmtree(destination)
-    shutil.copytree(source, destination, ignore=ignore)
+    (destination / "public").mkdir(parents=True)
+    shutil.copytree(browser_dist, destination / "public", dirs_exist_ok=True)
+
+    if docs.exists():
+        shutil.copytree(docs, destination / "docs", dirs_exist_ok=True)
+
+    if readme.exists():
+        shutil.copy2(readme, destination / "README.md")
+
+    config_dir = destination / "config"
+    config_dir.mkdir(exist_ok=True)
+    api_base_url = ""
+    if env_example.exists():
+        for line in env_example.read_text(encoding="utf-8").splitlines():
+            if line.startswith("SPAGHETTICHEF_API_BASE_URL="):
+                api_base_url = line.split("=", 1)[1]
+                break
+
+    (config_dir / "app-config.example.json").write_text(
+        json.dumps({"apiBaseUrl": api_base_url}, indent=2) + "\n",
+        encoding="utf-8",
+    )
 PY
 
                     tar -C package/linux -czf "dist/${LINUX_PACKAGE}" spaghettichef-angular

@@ -1,6 +1,12 @@
+# Version 0.0.0 — project initialisation
+
+## Status
+
+DONE
 
 
-```text
+## Scope
+
 Create a small Angular standalone application named spangular.
 
 Use routing with three pages: Dashboard, Printers, Settings.
@@ -21,4 +27,13 @@ No Django backend.
 No write actions.
 No POST/PUT/DELETE.
 Read-only frontend only.
+
+Jenkins will produce a developer/source release. It requires:
+
+```text
+npm install
+npm run build
+npm start
 ```
+
+So it is not a product release.

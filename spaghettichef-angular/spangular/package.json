@@ -1,6 +1,6 @@
 {
   "name": "spangular",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "prestart": "node scripts/write-environment.js",
