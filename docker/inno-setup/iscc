@@ -2,6 +2,37 @@
 set -euo pipefail
 
 ISCC_EXE='C:\InnoSetup\ISCC.exe'
+WINDOWS_ARGS=()
+
+to_windows_path() {
+  local path="$1"
+  if [[ "${path}" = /* ]]; then
+    winepath -w "${path}"
+  else
+    winepath -w "${PWD}/${path}"
+  fi
+}
+
+for arg in "$@"; do
+  case "${arg}" in
+    /DSourceDir=*)
+      WINDOWS_ARGS+=("/DSourceDir=$(to_windows_path "${arg#*=}")")
+      ;;
+    /DOutputDir=*)
+      WINDOWS_ARGS+=("/DOutputDir=$(to_windows_path "${arg#*=}")")
+      ;;
+    *.iss)
+      WINDOWS_ARGS+=("$(to_windows_path "${arg}")")
+      ;;
+    *)
+      WINDOWS_ARGS+=("${arg}")
+      ;;
+  esac
+done
 
 echo "Running Inno Setup Compiler: ${ISCC_EXE}" >&2
-exec xvfb-run -a -e /dev/stdout wine "${ISCC_EXE}" "$@"
+printf 'ISCC arguments:' >&2
+printf ' %q' "${WINDOWS_ARGS[@]}" >&2
+printf '\n' >&2
+
+exec xvfb-run -a -e /dev/stdout wine "${ISCC_EXE}" "${WINDOWS_ARGS[@]}"
