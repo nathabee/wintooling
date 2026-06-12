@@ -99,4 +99,10 @@ No installer UI
 ```
 
 That is for the next version.
- 
+
+---
+
+## githook installation
+
+
+git config core.hooksPath tools/git-hooks
