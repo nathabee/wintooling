@@ -5,7 +5,43 @@ ROOT_DIR="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 VERSION_FILE="${ROOT_DIR}/VERSION"
 PACKAGE_JSON="${ROOT_DIR}/spaghettichef-angular/spangular/package.json"
 PACKAGE_LOCK_JSON="${ROOT_DIR}/spaghettichef-angular/spangular/package-lock.json"
-PYTHON_BIN="${PYTHON_BIN:-python3}"
+
+PYTHON_CMD=()
+
+python_works() {
+  "$@" -c "import json" >/dev/null 2>&1
+}
+
+resolve_python() {
+  if [[ -n "${PYTHON_BIN:-}" ]]; then
+    PYTHON_CMD=("${PYTHON_BIN}")
+    if ! python_works "${PYTHON_CMD[@]}"; then
+      echo "PYTHON_BIN does not point to a working Python: ${PYTHON_BIN}" >&2
+      exit 1
+    fi
+    return
+  fi
+
+  if command -v python3 >/dev/null 2>&1 && python_works python3; then
+    PYTHON_CMD=("python3")
+    return
+  fi
+
+  if command -v python >/dev/null 2>&1 && python_works python; then
+    PYTHON_CMD=("python")
+    return
+  fi
+
+  if command -v py >/dev/null 2>&1 && python_works py -3; then
+    PYTHON_CMD=("py" "-3")
+    return
+  fi
+
+  echo "Python was not found. Install Python or set PYTHON_BIN." >&2
+  exit 1
+}
+
+resolve_python
 
 if [[ ! -f "${VERSION_FILE}" ]]; then
   echo "Missing VERSION file at ${VERSION_FILE}" >&2
@@ -19,7 +55,7 @@ if [[ ! "${VERSION}" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
   exit 1
 fi
 
-"${PYTHON_BIN}" - "${VERSION}" "${PACKAGE_JSON}" "${PACKAGE_LOCK_JSON}" <<'PY'
+"${PYTHON_CMD[@]}" - "${VERSION}" "${PACKAGE_JSON}" "${PACKAGE_LOCK_JSON}" <<'PY'
 import json
 import sys
 from pathlib import Path
