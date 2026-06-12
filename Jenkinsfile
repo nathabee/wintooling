@@ -211,6 +211,18 @@ PY
 
                     RELEASE_NAME_VALUE="$(cat .jenkins-release-name)"
 
+                    if ! command -v docker >/dev/null 2>&1; then
+                      echo "Docker is required on the Linux Jenkins agent to build the Windows installer." >&2
+                      echo "Install Docker, then make sure the Jenkins user can run docker commands." >&2
+                      exit 1
+                    fi
+
+                    if ! docker info >/dev/null 2>&1; then
+                      echo "Docker is installed, but the Jenkins user cannot connect to the Docker daemon." >&2
+                      echo "Start the Docker service and make sure /var/run/docker.sock is available to Jenkins." >&2
+                      exit 1
+                    fi
+
                     docker build \
                       -t spaghettichef-inno-setup:local \
                       docker/inno-setup

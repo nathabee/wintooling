@@ -1,7 +1,5 @@
 FROM debian:12-slim
 
-ARG INNO_SETUP_VERSION=6.2.2
-
 ENV DEBIAN_FRONTEND=noninteractive
 ENV WINEDEBUG=-all
 
@@ -18,7 +16,7 @@ RUN dpkg --add-architecture i386 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p /opt/inno-setup \
-    && curl -fsSL "https://files.jrsoftware.org/is/6/innosetup-${INNO_SETUP_VERSION}.exe" -o /tmp/innosetup.exe \
+    && curl -fsSL "https://jrsoftware.org/download.php/is.exe" -o /tmp/innosetup.exe \
     && xvfb-run -a wine /tmp/innosetup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=C:\\InnoSetup \
     && rm -f /tmp/innosetup.exe
 
