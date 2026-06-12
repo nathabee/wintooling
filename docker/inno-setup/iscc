@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+exec xvfb-run -a wine "C:\\InnoSetup\\ISCC.exe" "$@"

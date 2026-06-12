@@ -2,7 +2,7 @@
 
 ## Status
 
-PLANNED
+DONE
 
 ## Goal
 
@@ -31,7 +31,7 @@ installer/spaghettichef-angular.iss
 docs/windows-installer.md
 docker/inno-setup/README.md
 Jenkins stage: Build Windows Installer
-````
+```
 
 ## Build Flow
 

@@ -191,6 +191,41 @@ with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as zf:
             zf.write(path, archive_root / path.relative_to(source_path))
 PY
 
+                    ls -lh dist
+                '''
+            }
+        }
+
+        stage('Build Windows Installer') {
+            steps {
+                sh '''
+                    set -eu
+
+                    RELEASE_NAME_VALUE="$(cat .jenkins-release-name)"
+
+                    docker build \
+                      -t spaghettichef-inno-setup:local \
+                      docker/inno-setup
+
+                    docker run --rm \
+                      -v "${PWD}:/work" \
+                      spaghettichef-inno-setup:local \
+                      "/DAppVersion=${RELEASE_NAME_VALUE}" \
+                      "/DSourceDir=package/windows/spaghettichef-angular" \
+                      "/DOutputDir=dist" \
+                      installer/spaghettichef-angular.iss
+
+                    test -f "dist/SpaghettiChefAngularSetup-${RELEASE_NAME_VALUE}.exe"
+                '''
+            }
+        }
+
+        stage('Finalize Release Artifacts') {
+            steps {
+                sh '''
+                    set -eu
+
+                    rm -f dist/SHA256SUMS.txt
                     sha256sum dist/* > dist/SHA256SUMS.txt
                     ls -lh dist
                 '''

@@ -134,7 +134,13 @@ Artifacts:
 
 Use Inno Setup Compiler to create a Windows .exe installer from the 0.0.1 production package.
 
-## 0.0.3 — Linux Install Package
+## 0.0.3 — Windows Installer plus
+
+Create a Windows installer that installs a runnable Angular console.
+
+After installation, the user must be able to start the application from the Start Menu without cloning the repository, running Angular CLI, running `npm install`, or running `ng serve`.
+
+## 0.0.4 — Linux Install Package
 
 Provide a Linux installable package or install script for serving the Angular static files with a standard web server.
 
