@@ -35,4 +35,4 @@ printf 'ISCC arguments:' >&2
 printf ' %q' "${WINDOWS_ARGS[@]}" >&2
 printf '\n' >&2
 
-exec xvfb-run -a -e /dev/stdout wine "${ISCC_EXE}" "${WINDOWS_ARGS[@]}"
+exec wine "${ISCC_EXE}" "${WINDOWS_ARGS[@]}"
