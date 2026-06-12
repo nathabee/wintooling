@@ -172,7 +172,7 @@ for destination in destinations:
                 break
 
     (config_dir / "app-config.example.json").write_text(
-        json.dumps({"apiBaseUrl": api_base_url}, indent=2) + "\n",
+        json.dumps({"apiBaseUrl": api_base_url}, indent=2) + "\\n",
         encoding="utf-8",
     )
 
