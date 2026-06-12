@@ -12,6 +12,7 @@ RUN dpkg --add-architecture i386 \
         wine \
         wine32 \
         wine64 \
+        xauth \
         xvfb \
     && rm -rf /var/lib/apt/lists/*
 
