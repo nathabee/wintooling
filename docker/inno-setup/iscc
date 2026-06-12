@@ -1,4 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-exec xvfb-run -a wine "C:\\InnoSetup\\ISCC.exe" "$@"
+ISCC_EXE='C:\InnoSetup\ISCC.exe'
+
+echo "Running Inno Setup Compiler: ${ISCC_EXE}" >&2
+exec xvfb-run -a -e /dev/stdout wine "${ISCC_EXE}" "$@"

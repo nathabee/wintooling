@@ -19,6 +19,7 @@ RUN dpkg --add-architecture i386 \
 RUN mkdir -p /opt/inno-setup \
     && curl -fsSL "https://jrsoftware.org/download.php/is.exe" -o /tmp/innosetup.exe \
     && xvfb-run -a wine /tmp/innosetup.exe /VERYSILENT /SUPPRESSMSGBOXES /NORESTART /DIR=C:\\InnoSetup \
+    && test -f /root/.wine/drive_c/InnoSetup/ISCC.exe \
     && rm -f /tmp/innosetup.exe
 
 COPY iscc /usr/local/bin/iscc

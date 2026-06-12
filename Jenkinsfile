@@ -227,7 +227,7 @@ PY
                       -t spaghettichef-inno-setup:local \
                       docker/inno-setup
 
-                    docker run --rm \
+                    timeout 15m docker run --rm \
                       -v "${PWD}:/work" \
                       spaghettichef-inno-setup:local \
                       "/DAppVersion=${RELEASE_NAME_VALUE}" \
