@@ -140,6 +140,8 @@ browser_dist = pathlib.Path("spaghettichef-angular/spangular/dist/spangular/brow
 docs = pathlib.Path("spaghettichef-angular/docs")
 readme = pathlib.Path("spaghettichef-angular/README.md")
 env_example = pathlib.Path("spaghettichef-angular/spangular/.env.example")
+windows_runtime = pathlib.Path("runtime/windows")
+windows_scripts = pathlib.Path("scripts/windows")
 destinations = [
     pathlib.Path("package/windows/spaghettichef-angular"),
     pathlib.Path("package/linux/spaghettichef-angular"),
@@ -173,6 +175,12 @@ for destination in destinations:
         json.dumps({"apiBaseUrl": api_base_url}, indent=2) + "\n",
         encoding="utf-8",
     )
+
+    if destination.as_posix().startswith("package/windows/"):
+        if windows_runtime.exists():
+            shutil.copytree(windows_runtime, destination / "runtime" / "windows", dirs_exist_ok=True)
+        if windows_scripts.exists():
+            shutil.copytree(windows_scripts, destination / "scripts" / "windows", dirs_exist_ok=True)
 PY
 
                     tar -C package/linux -czf "dist/${LINUX_PACKAGE}" spaghettichef-angular

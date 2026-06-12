@@ -41,12 +41,16 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Source: "{#SourceDir}\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
-Name: "{autoprograms}\SpaghettiChef Angular"; Filename: "{app}\public\index.html"; WorkingDir: "{app}\public"
+Name: "{autoprograms}\SpaghettiChef Angular Console"; Filename: "{app}\scripts\windows\start-spaghettichef-angular.bat"; WorkingDir: "{app}"
+Name: "{autoprograms}\Stop SpaghettiChef Angular Console"; Filename: "{app}\scripts\windows\stop-spaghettichef-angular.bat"; WorkingDir: "{app}"
 Name: "{autoprograms}\SpaghettiChef Angular README"; Filename: "{app}\README.md"
-Name: "{autodesktop}\SpaghettiChef Angular"; Filename: "{app}\public\index.html"; WorkingDir: "{app}\public"; Tasks: desktopicon
+Name: "{autodesktop}\SpaghettiChef Angular Console"; Filename: "{app}\scripts\windows\start-spaghettichef-angular.bat"; WorkingDir: "{app}"; Tasks: desktopicon
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a desktop shortcut"; GroupDescription: "Additional shortcuts:"; Flags: unchecked
 
 [Run]
-Filename: "{app}\public\index.html"; Description: "Open SpaghettiChef Angular"; Flags: postinstall shellexec skipifsilent nowait
+Filename: "{app}\scripts\windows\start-spaghettichef-angular.bat"; Description: "Start SpaghettiChef Angular Console"; Flags: postinstall shellexec skipifsilent nowait
+
+[UninstallRun]
+Filename: "{app}\scripts\windows\stop-spaghettichef-angular.bat"; Flags: runhidden
